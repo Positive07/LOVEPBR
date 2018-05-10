@@ -78,12 +78,12 @@ function iqm.load(file)
 
 	-- Read filedata
 	local data = love.filesystem.read(file)
-    
+
     -- Decode the header, it's got all the offsets
 	local iqm_header = ffi.typeof("struct iqmheader*")
 	local size   = ffi.sizeof("struct iqmheader")
 	local header = ffi.cast(iqm_header, data)[0]
-    
+
 	-- We only support IQM version 2
 	assert(header.version == 2, "iqm.import(): Incompatible version, only IQM version 2 is supported.")
 
@@ -189,7 +189,7 @@ function iqm.load(file)
 		"char",
 		header.ofs_text
 	)
-    
+
 	-- Decode meshes
 	local meshes = read_offset(
 		data,

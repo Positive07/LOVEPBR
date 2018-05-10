@@ -17,7 +17,7 @@ varying vec3 cube_coords;
 #endif
 
 #ifdef PIXEL
-    vec4 effect(vec4 pixel_color, Image tex, vec2 texture_coords, vec2 screen_coords) 
+    vec4 effect(vec4 pixel_color, Image tex, vec2 texture_coords, vec2 screen_coords)
     {
         return texture(skybox, cube_coords);
 	}

@@ -8,9 +8,9 @@
 	uniform mat4 u_bone_matrices[32];
 	uniform int u_skinning;
 
-	mat4 getDeformMatrix() 
+	mat4 getDeformMatrix()
     {
-		if (u_skinning != 0) 
+		if (u_skinning != 0)
         {
 			return
 				u_bone_matrices[int(VertexBone.x*255.0)] * VertexWeight.x +
@@ -20,7 +20,7 @@
 		}
 		return mat4(1.0);
 	}
-    
+
 	vec4 position(mat4 mvp, vec4 v_position)
     {
 		return u_projection * u_view * u_model * getDeformMatrix() * v_position;

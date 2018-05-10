@@ -1,6 +1,6 @@
 ----------------------------
     -- Configuration
----------------------------- 
+----------------------------
 cvar = {
     anti_alias = 16,
     shadow_res = 2048,
@@ -11,12 +11,12 @@ cvar = {
 ----------------------------
 function love.conf(t)
     t.identity              = "LÖVE PBR"
-    t.version               = "0.11.0"
+    t.version               = "11.0"
     t.console               = true
     t.accelerometerjoystick = false
     t.externalstorage       = false
     t.gammacorrect          = false
-    
+
     t.window.title          = "LÖVE PBR"
     t.window.icon           = nil
     t.window.width          = 1280
@@ -29,7 +29,7 @@ function love.conf(t)
     t.window.msaa           = cvar.anti_alias
     t.window.display        = 1
     t.window.highdpi        = false
-    
+
     -- Disable unneccesary modules
     t.modules.physics       = false
     t.modules.touch         = false
