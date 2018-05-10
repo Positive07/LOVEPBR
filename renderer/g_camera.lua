@@ -2,6 +2,7 @@ local cpml   = require "cpml"
 local matrix = require "renderer.matrix"
 
 local w, h = love.graphics.getDimensions()
+local t = 0
 
 ----------------------------
     -- Camera
@@ -34,7 +35,7 @@ function camera:send_to_shader(shader)
     v:translate(v, -self.position)
 
 	-- Projection matrix
-	local w, h = love.graphics.getDimensions()
+	w, h = love.graphics.getDimensions()
 	local p = cpml.mat4.from_perspective(self.fov, w/h, 0.1, 1000.0)
 
 	-- Update shader uniforms
@@ -43,7 +44,7 @@ function camera:send_to_shader(shader)
 	shader:send("u_view_direction", {d.x, d.y, d.z})
 
     -- Testing code
-    t = (t or 0) + love.timer.getDelta()
+    t = t + love.timer.getDelta()
     self.position.x = math.sin(t)*4
     self.position.z = math.cos(t)*4
     self.position.y = math.pi/1.5
@@ -55,7 +56,7 @@ function camera:send_to_skybox(shader)
     v:look_at(v, self.position, self.look_at, -cpml.vec3.unit_y)
 
 	-- Projection matrix
-	local w, h = love.graphics.getDimensions()
+	w, h = love.graphics.getDimensions()
 	local p = cpml.mat4.from_perspective(self.fov, w/h, 0.1, 10.0)
 
 	-- Update shader uniforms
