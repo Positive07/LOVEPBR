@@ -1,7 +1,7 @@
 local ffi = require "ffi"
 local c   = ffi.C
 
-ffi.cdef((love.filesystem.read "iqm.h"))
+ffi.cdef((love.filesystem.read ((...):gsub("%.", "/").."/iqm.h")))
 
 local iqm = {}
 iqm.lookup = {}
@@ -12,7 +12,7 @@ iqm.lookup = {}
 local function read_offset(data, type, offset, num)
     local decoded = {}
     local type_ptr = ffi.typeof(type.."*")
-    local size = ffi.sizeof(type)
+    --local size = ffi.sizeof(type)
     local ptr = ffi.cast(type_ptr, data:sub(offset+1))
     for i = 1, num do
         table.insert(decoded, ptr[i-1])
@@ -22,7 +22,7 @@ end
 
 local function read_ptr(data, type, offset)
     local type_ptr = ffi.typeof(type.."*")
-    local size = ffi.sizeof(type)
+    --local size = ffi.sizeof(type)
     local ptr = ffi.cast(type_ptr, data:sub(offset+1))
     return ptr
 end
@@ -68,7 +68,7 @@ end
     -- Load
 ----------------------------
 function iqm.load(file)
-	assert(love.filesystem.getInfo(file), "iqm.load(): Model file does not exist.")
+	assert(love.filesystem.getInfo(file, "file"), "iqm.load(): Model file does not exist.")
 
 	-- Make sure it's a valid IQM file first
 	local magic = love.filesystem.read(file, 16)
@@ -81,7 +81,7 @@ function iqm.load(file)
 
     -- Decode the header, it's got all the offsets
 	local iqm_header = ffi.typeof("struct iqmheader*")
-	local size   = ffi.sizeof("struct iqmheader")
+	--local size   = ffi.sizeof("struct iqmheader")
 	local header = ffi.cast(iqm_header, data)[0]
 
 	-- We only support IQM version 2
@@ -101,26 +101,20 @@ function iqm.load(file)
 	local found_types = {}
 
 	for _, va in ipairs(vertex_arrays) do
-		while true do
-
 		local type = translate_va(va.type)
-		if not type then
-			break
+		if (not not type) then
+			local format = assert(translate_format(va.format))
+
+			table.insert(found, string.format("%s %s[%d]", format, type, va.size))
+			table.insert(found_names, type)
+			table.insert(found_types, {
+				type        = type,
+				size        = va.size,
+				offset      = va.offset,
+				format      = format,
+				love_type   = translate_love(type)
+			})
 		end
-
-		local format = assert(translate_format(va.format))
-
-		table.insert(found, string.format("%s %s[%d]", format, type, va.size))
-		table.insert(found_names, type)
-		table.insert(found_types, {
-			type        = type,
-			size        = va.size,
-			offset      = va.offset,
-			format      = format,
-			love_type   = translate_love(type)
-		})
-
-		break end
 	end
 	table.sort(found_names)
 	local title = "iqm_vertex_" .. table.concat(found_names, "_")
@@ -200,7 +194,7 @@ function iqm.load(file)
 
 	local objects = {}
 	objects.mesh = m
-	for i, mesh in ipairs(meshes) do
+	for _, mesh in ipairs(meshes) do
 		local add = {
 			first    = mesh.first_triangle * 3 + 1,
 			count    = mesh.num_triangles * 3,

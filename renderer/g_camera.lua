@@ -7,16 +7,15 @@ local t = 0
 ----------------------------
     -- Camera
 ----------------------------
+local color = love.graphics.newCanvas(w, h, {format = "rgba8",   msaa = cvar.anti_alias})
+local depth = love.graphics.newCanvas(w, h, {format = "depth24", msaa = cvar.anti_alias})
 
 local camera = {
     -- Horizontal field of view
     fov = 75,
 
     -- Main canvas
-    canvas = {
-                       love.graphics.newCanvas(w, h, {format = "rgba8",   msaa = cvar.anti_alias}),
-        depthstencil = love.graphics.newCanvas(w, h, {format = "depth24", msaa = cvar.anti_alias})
-    },
+    canvas = { color, depthstencil = depth },
 
 	-- Spatial data
     position = cpml.vec3(0, 0, 0),

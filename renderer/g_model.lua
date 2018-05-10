@@ -64,10 +64,10 @@ end
 ----------------------------
     -- Constructor
 ----------------------------
-local function new(self, data)
+local function new(_, data)
     local model = setmetatable({}, Model)
 
-    model.model     = iqm.load("media/model/" .. data.mesh)
+    model.model     = iqm.load("assets/model/" .. data.mesh)
     model.normal    = (type(data.normal) == "table") and data.normal or {data.normal}
     model.diffuse   = (type(data.diffuse) == "table") and data.diffuse or {data.diffuse}
     model.material  = (type(data.material) == "table") and data.material or {data.material}
@@ -81,7 +81,7 @@ local function new(self, data)
     local texture = {"normal", "diffuse", "material", "emmissive"}
     for _, k in ipairs(texture) do
         for i, v in ipairs(model[k]) do
-            model[k][i] = love.graphics.newImage("media/image/" .. v)
+            model[k][i] = love.graphics.newImage("assets/image/" .. v)
         end
     end
 

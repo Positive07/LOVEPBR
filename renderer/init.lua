@@ -12,11 +12,11 @@ local renderer = {
     shader = {
         lighting = love.graphics.newShader("shader/3DShader.glsl"),
         shadow   = love.graphics.newShader("shader/3DShadow.glsl"),
-        skybox   = love.graphics.newShader("shader/3DSkybox.glsl"),
+        skybox   = love.graphics.newShader("shader/3DSkybox.glsl")
     },
 
     -- Skybox
-    skybox = {},
+    skybox = {}
 }
 
 ----------------------------
@@ -32,7 +32,7 @@ function renderer:init(scene)
 
     -- load skybox texture
     self.skybox.cubemap = love.graphics.newCubeImage(
-        "media/image/" .. scene["skybox"],
+        "assets/image/" .. scene["skybox"],
         {
             linear = true,
             mipmaps = true,
@@ -101,9 +101,8 @@ function renderer:bake_shadow_map(scene, light)
 
     -- Render to depth buffer
     love.graphics.setShader(self.shader.shadow)
-    -- TODO: figure out how to render to depth canvas without passing a color canvas
-    love.graphics.setCanvas({light.dummy, depthstencil = light.shadow})
-    for k, v in pairs(scene.model) do
+    love.graphics.setCanvas({depthstencil = light.shadow})
+    for _, v in pairs(scene.model) do
         v:draw(self.shader.shadow, true)
     end
     love.graphics.setCanvas()
@@ -145,7 +144,7 @@ function renderer:main_pass(scene)
     love.graphics.setCanvas(self.camera.canvas)
     love.graphics.setShader(self.shader.lighting)
 
-    for k, v in pairs(scene.model) do
+    for _, v in pairs(scene.model) do
         v:draw(self.shader.lighting)
     end
 

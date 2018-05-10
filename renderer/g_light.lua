@@ -9,16 +9,15 @@ local light = {
     -- Light Source Functions
 ----------------------------
 function light:init(scene)
-    local light = self.directional_light
+    local l = self.directional_light
     local res = cvar.shadow_res
 
     -- Reset light tables
-    light.position = scene["directional_light"].position or {0, 0, 0}
-    light.color    = scene["directional_light"].color or {1, 1, 1, 1}
-    light.shadow   = love.graphics.newCanvas(res, res, {format = "depth24", readable = true})
-    light.dummy    = love.graphics.newCanvas(res, res, {format = "r8"})
-    light.shadow:setDepthSampleMode("less")
-    light.shadow:setFilter("linear", "linear")
+    l.position = scene["directional_light"].position or {0, 0, 0}
+    l.color    = scene["directional_light"].color or {1, 1, 1, 1}
+    l.shadow   = love.graphics.newCanvas(res, res, {format = "depth24", readable = true})
+    l.shadow:setDepthSampleMode("less")
+    l.shadow:setFilter("linear", "linear")
 end
 
 ----------------------------
