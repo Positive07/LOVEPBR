@@ -22,4 +22,5 @@ function love.draw()
 
     -- Display frame
     love.graphics.pop()
+    love.graphics.print("FPS: "..love.timer.getFPS())
 end
