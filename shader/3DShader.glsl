@@ -161,12 +161,12 @@ varying mat4 inverse_view;
         //  R channel: Roughness
         //  G channel: Metalness
         //  B channel: Fresnel
-        vec3 diffuse    = texture2D(tex, texture_coords).rgb;
+        vec3 diffuse    = Texel(tex, texture_coords).rgb;
         vec3 normal     = TBN * normalize(texture2D(normal_map, texture_coords).rgb*2.0 - 1.0);
-        vec3 emmissive  = texture2D(emmissive_map, texture_coords).rgb;
-        float roughness = texture2D(material_map, texture_coords).r;
-        float metalness = texture2D(material_map, texture_coords).g;
-        float specular  = texture2D(material_map, texture_coords).b;
+        vec3 emmissive  = Texel(emmissive_map, texture_coords).rgb;
+        float roughness = Texel(material_map, texture_coords).r;
+        float metalness = Texel(material_map, texture_coords).g;
+        float specular  = Texel(material_map, texture_coords).b;
 
         // Diffuse and specular values mixed later
         vec3 diff;
